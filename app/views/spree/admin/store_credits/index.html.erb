@@ -9,6 +9,7 @@
       <th><%= t("amount") %></th>
       <th><%= t("remaining_amount") %></th>
       <th><%= t("reason") %></th>
+			<th><%= t("withdrawal_info") %></th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,7 @@
         <td><%= number_to_currency store_credit.amount %></td>
         <td><%= number_to_currency store_credit.remaining_amount %></td>
         <td><%= store_credit.reason %></td>
+				<td><%= store_credit.withdrawal_info %></td>
         <td class="actions">
           <% if store_credit.remaining_amount > 0 %>
             <% if store_credit.amount == store_credit.remaining_amount %>
@@ -29,6 +31,7 @@
           <% else %>
             <%= t(:was_fully_used) %>
           <% end %>
+				</td>
       </tr>
     <% end %>
     <% if @store_credits.empty? %>
