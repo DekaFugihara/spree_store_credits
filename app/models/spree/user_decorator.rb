@@ -27,7 +27,7 @@ if Spree.user_class
     end
     
     def withdraw_credits(amount)
-      if amount > credits_available_withdrawn_sum
+      if amount == 0 || amount > credits_available_withdrawn_sum
         return false
       else
         credits_available_withdrawn.each do |store_credit|
