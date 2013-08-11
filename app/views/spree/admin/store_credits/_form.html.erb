@@ -6,3 +6,10 @@
   <%= f.label :reason, t("reason")%><br />
   <%= f.text_field :reason %>
 <% end %>
+<%= f.field_container :withdrawal_info do %>
+  <%= f.label :withdrawal_info, "Info para resgate" %><br />
+  <%= f.text_field :withdrawal_info %>
+<% end %>
+<%= f.field_container :refundable do %>
+  <%= f.check_box :refundable %> <%= f.label :refundable, "Reembolsável?" %>
+<% end %>

@@ -11,7 +11,7 @@ if Spree.user_class
     end
     
     def credits_available_withdrawn
-      store_credits.where(status: true).where("created_at < ?", Date.today - 15.days)
+      store_credits.where(status: true).where(refundable: true).where("created_at < ?", Date.today - 15.days)
     end
 
     def credits_available_withdrawn_sum
@@ -23,7 +23,7 @@ if Spree.user_class
     end
     
     def credits_pending_withdrawn_sum
-      store_credits.where(status: false).sum(:remaining_amount)
+      credits_pending_withdrawn.sum(:remaining_amount)
     end
     
     def withdraw_credits(amount)

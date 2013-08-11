@@ -1,5 +1,5 @@
 class Spree::StoreCredit < ActiveRecord::Base
-  attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :withdrawal_info
+  attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :withdrawal_info, :refundable
 
   validates :amount, :presence => true, :numericality => true
   validates :reason, :presence => true
