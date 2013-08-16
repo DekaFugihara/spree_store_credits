@@ -18,7 +18,15 @@ Spree::Order.class_eval do
     end
   end
   alias_method_chain :process_payments!, :credits
-
+  
+  def display_total_without_store_credits
+    Spree::Money.new(total_without_store_credits, { currency: currency })
+  end
+  
+  def total_without_store_credits
+    item_total + adjustment_total + store_credit_amount
+  end
+  
   def store_credit_amount
     adjustments.store_credits.sum(:amount).abs.to_f
   end
