@@ -2,6 +2,10 @@
   <%= f.label :amount, t("amount")%><br />
   <%= f.text_field :amount %>
 <% end %>
+<%= f.field_container :remaining_amount do %>
+  <%= f.label :remaining_amount, t("remaining_amount") %><br />
+  <%= f.text_field :remaining_amount %>
+<% end %>
 <%= f.field_container :reason do %>
   <%= f.label :reason, t("reason")%><br />
   <%= f.text_field :reason %>

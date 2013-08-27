@@ -13,8 +13,8 @@ pt-BR:
   store_credit_maximum_amount: "O montante de crédito deve ser menor ou igual a %{amount}. Isto é obrigatório para o pedido ser confirmado."
   store_credits: "Créditos da Loja"
   you_have_store_credit: "Você tem %{amount} de crédito da loja"
-  was_fully_used: "foi totalmente usado"
-  was_partially_used: "foi parcialmente usado"
+  was_fully_used: "totalmente usado"
+  was_partially_used: "parcialmente usado"
   cannot_edit_used: "Não pode ser editado porque já foi usado"
   withdrawal_info: "Info para resgate"
   errors:
