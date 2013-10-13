@@ -1,5 +1,3 @@
-<%= render :partial => 'spree/admin/shared/configuration_menu' %>
-
 <h1 class="page-title "> <%= t("listing_store_credits") %></h1><br>
 
 <table class="index">
@@ -10,7 +8,7 @@
       <th><%= t("amount") %></th>
       <th><%= t("remaining_amount") %></th>
       <th><%= t("reason") %></th>
-			<th><%= t("withdrawal_info") %></th>
+			<th><%= t("category") %></th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +19,7 @@
         <td><%= number_to_currency store_credit.amount %></td>
         <td><%= number_to_currency store_credit.remaining_amount %></td>
         <td><%= store_credit.reason %></td>
-				<td><%= store_credit.withdrawal_info %></td>
+				<td><%= Spree::StoreCredit::CATEGORIES_LIST.select{ |x| x[1] == store_credit.category }[0][0] if store_credit.category %></td>
         <td class="actions">
           <% if store_credit.remaining_amount > 0 %>
             <% if store_credit.amount != store_credit.remaining_amount %>

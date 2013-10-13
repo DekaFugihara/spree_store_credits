@@ -30,6 +30,22 @@ Spree::Order.class_eval do
   def store_credit_amount
     adjustments.store_credits.sum(:amount).abs.to_f
   end
+  
+  def store_credits
+    order_scs = []
+    if store_credit_amount > 0
+      user_scs = user.store_credits.where(status: true).where("created_at < ?", completed_at)
+      remaining_amount = store_credit_amount
+      user_scs.each do |sc|
+        remaining_amount_old = remaining_amount
+        remaining_amount -= sc.amount
+        remaining_amount = 0 if remaining_amount < 0 
+        order_scs << [sc, remaining_amount_old - remaining_amount]
+        break if remaining_amount == 0
+      end
+    end
+    order_scs
+  end
 
   # in case of paypal payment, item_total cannot be 0
   def store_credit_maximum_amount

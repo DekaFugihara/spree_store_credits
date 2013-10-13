@@ -10,10 +10,13 @@
   <%= f.label :reason, t("reason")%><br />
   <%= f.text_field :reason %>
 <% end %>
-<%= f.field_container :withdrawal_info do %>
-  <%= f.label :withdrawal_info, "Info para resgate" %><br />
-  <%= f.text_field :withdrawal_info %>
+<% if @store_credit.refundable %>
+	<%= f.field_container :withdrawal_info do %>
+	  <%= f.label :withdrawal_info, "Info para resgate" %><br />
+	  <%= f.text_field :withdrawal_info %>
+	<% end %>
 <% end %>
-<%= f.field_container :refundable do %>
-  <%= f.check_box :refundable %> <%= f.label :refundable, "Reembolsável?" %>
+<%= f.field_container :category do %>
+	<%= f.label :category, "Categoria" %><br />
+	<%= f.select :category, Spree::StoreCredit::CATEGORIES_LIST %>
 <% end %>
