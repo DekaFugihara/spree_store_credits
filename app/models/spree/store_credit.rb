@@ -14,7 +14,7 @@ class Spree::StoreCredit < ActiveRecord::Base
     attr_accessible :amount, :remaining_amount, :reason, :user_id
   end
   
-  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Saque", 4], ["Outra", 5]]
+  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Saque", 4], ["Indicação de amigo", 5], ["Outra", 6]]
   
   def set_refundable_option
     self.refundable = category == 2 ? 0 : 1
