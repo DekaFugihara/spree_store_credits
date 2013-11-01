@@ -18,5 +18,5 @@
 <% end %>
 <%= f.field_container :category do %>
 	<%= f.label :category, "Categoria" %><br />
-	<%= f.select :category, Spree::StoreCredit::CATEGORIES_LIST %>
+	<%= f.select :category, Spree::StoreCredit::CATEGORIES_LIST, :include_blank => true %>
 <% end %>
