@@ -1,0 +1,52 @@
+<% content_for :page_title do %>
+  Créditos agrupados por usuário
+<% end %>
+
+<% content_for :page_actions do %>
+	<li><%= button_link_to "Voltar", admin_store_credits_path, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+<%= render partial: "control_panel" %>
+
+<table class="index">
+  <thead>
+    <tr>
+			<th>Email</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+			<th>E</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+			<% store_credits = u.store_credits %>
+      <tr>
+				<td><%= link_to u.email, admin_user_path(u) %></td>
+        <td>
+					<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits.sum(:amount), { currency: "BRL" }) %></td>
+        <td>
+					<% store_credits1 = store_credits.where(refundable: 0) %>
+        	<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits1.sum(:amount), { currency: "BRL" }) %>
+        </td>
+        <td>
+					<% store_credits2 = store_credits.where(refundable: 1).where(status: true).where("created_at < ?", Date.today - 15.days) %>
+					<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits2.sum(:amount), { currency: "BRL" }) %>
+        </td>
+        <td>
+					<% store_credits3 = store_credits.where(refundable: 1).where(status: true).where("created_at > ?", Date.today - 15.days) %>
+					<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits3.sum(:amount), { currency: "BRL" }) %>
+        </td>
+				<td>
+					<% store_credits4 = store_credits.where(refundable: 1).where(status: false) %>
+					<%= Spree::Money.new(store_credits4.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits4.sum(:amount), { currency: "BRL" }) %>
+				</td>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,36 @@
+<table class="index">
+  <thead>
+    <tr>
+			<th>Data</th>
+      <th><%= t("user") %></th>
+      <th><%= t("amount") %></th>
+      <th><%= t("remaining_amount") %></th>
+      <th><%= t("reason") %></th>
+			<th><%= t("category") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% store_credits.each do |store_credit|%>
+      <tr id="<%= dom_id store_credit %>">
+				<td><%= l store_credit.created_at.to_date %> </td>
+        <td><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
+        <td><%= number_to_currency store_credit.amount %></td>
+        <td><%= number_to_currency store_credit.remaining_amount %></td>
+        <td><%= store_credit.reason %></td>
+				<td><%= Spree::StoreCredit::CATEGORIES_LIST.select{ |x| x[1] == store_credit.category }[0][0] if store_credit.category %></td>
+        <td class="actions">
+          <% if store_credit.remaining_amount > 0 && store_credit.amount != store_credit.remaining_amount %>
+            <%= t(:was_partially_used) %><br />
+					<% elsif store_credit.remaining_amount == 0 %>
+						<%= t(:was_fully_used) %><br />
+          <% end %>
+          <%= link_to_edit store_credit, :no_text => true %>
+          <%= link_to_delete store_credit, :no_text => true %>
+				</td>
+      </tr>
+    <% end %>
+    <% if store_credits.empty? %>
+      <tr><td colspan="4"><%= t(:none) %></td></tr>
+    <% end %>
+  </tbody>
+</table>
