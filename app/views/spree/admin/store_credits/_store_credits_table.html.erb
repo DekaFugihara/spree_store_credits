@@ -24,8 +24,8 @@
 					<% elsif store_credit.remaining_amount == 0 %>
 						<%= t(:was_fully_used) %><br />
           <% end %>
-          <%= link_to "", "admin/store_credits/#{store_credit.id}/edit", class: "icon_link with-tip icon-edit no-text", "data-action" => "edit"%>
-          <%= link_to "", "admin/store_credits/#{store_credit.id}", class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
+          <%= link_to "", "/admin/store_credits/#{store_credit.id}/edit", class: "icon_link with-tip icon-edit no-text", "data-action" => "edit"%>
+          <%= link_to "", "/admin/store_credits/#{store_credit.id}", class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
 				</td>
       </tr>
     <% end %>
