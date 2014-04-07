@@ -1,6 +1,6 @@
 if Spree.user_class
   Spree.user_class.class_eval do
-    has_many :store_credits, :class_name => "Spree::StoreCredit", :order => 'created_at DESC'
+    has_many :store_credits, :class_name => "Spree::StoreCredit", :order => 'refundable ASC, created_at DESC'
 
     def has_store_credit?
       store_credits.where(status: true).present?
