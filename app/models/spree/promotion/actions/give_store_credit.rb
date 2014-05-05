@@ -4,8 +4,10 @@ module Spree
     attr_accessible :preferred_amount
 
     def perform(options = {})
-      if _user = options[:user]
-        _user.store_credits.create(:amount => preferred_amount, :remaining_amount => preferred_amount,  :reason => "Promotion: #{promotion.name}")
+      reason = "#{promotion.name}"
+      if user = options[:user]
+        return if user.store_credits.where(:reason => reason).present?
+        user.store_credits.create(:amount => preferred_amount, :remaining_amount => preferred_amount, :reason => reason, :category => 2)
       end
     end
   end
