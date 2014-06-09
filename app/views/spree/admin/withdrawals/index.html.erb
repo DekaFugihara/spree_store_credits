@@ -1,0 +1,61 @@
+<% content_for :page_title do %>
+  <%= t("listing_withdrawals") %>
+<% end %>
+
+<fieldset>
+	<legend align="center">Buscar Resgates</legend>
+	<div data-hook="admin_orders_index_search">
+		<%= search_form_for [:admin, @search] do |f| %>
+		
+	    <div class="field-block alpha four columns">
+	      <div class="date-range-filter field">
+	        <%= label_tag nil, t(:date_range) %>
+	        <div class="date-range-fields">
+	          <%= f.text_field :created_at_gt, :class => 'datepicker datepicker-from', :value => params[:q][:created_at_gt], :placeholder => t(:start) %>
+	          <span class="range-divider">
+	            <i class="icon-arrow-right"></i>
+	          </span>
+	          <%= f.text_field :created_at_lt, :class => 'datepicker datepicker-to', :value => params[:q][:created_at_lt], :placeholder => t(:stop) %>
+	        </div>
+	      </div>
+		    <div class="field">
+		      <%= label_tag nil, t(:category) %>
+		      <%= f.select :category_eq, options_for_select(Spree::Withdrawal::CATEGORIES_LIST), {:include_blank => true}, :class => 'select2' %>
+		    </div>
+			</div>
+
+	    <div class="four columns">
+	      <div class="field">
+	        <%= label_tag nil, "Descrição" %>
+	        <%= f.text_field :description_or_order_number_cont, :size => 25, :value => params[:q][:description_or_order_number_cont] %>
+	      </div>
+	      <div class="field">
+	        <%= label_tag nil, t(:email) %>
+	        <%= f.email_field :user_email_cont, :size => 25, :value => params[:q][:user_email_cont] %>
+	      </div>
+	    </div>
+			
+	    <div class="omega four columns">
+		    <div class="field checkbox">
+		      <label>
+		        <%= check_box_tag :format, 'xls' %>
+		        Exportar para Excel
+		      </label>
+		    </div>
+	    </div>			
+	
+		  <div class="clear"></div>
+
+      <div class="actions filter-actions">
+        <div data-hook="admin_orders_index_search_buttons">
+          <%= button t(:filter_results), 'icon-search' %>
+        </div>
+      </div>
+			
+		<% end %>
+	</div>
+</fieldset>
+
+<%= render partial: "withdrawals_table", locals: {withdrawals: @collection} %>
+
+<%= paginate @collection %>

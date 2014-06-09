@@ -25,28 +25,24 @@
       <tr>
 				<td><%= link_to u.email, admin_user_path(u) %></td>
         <td>
-					<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
-					<%= Spree::Money.new(store_credits.sum(:amount), { currency: "BRL" }) %></td>
+					<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %>
         <td>
 					<% store_credits1 = store_credits.where(refundable: 0) %>
-        	<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
-					<%= Spree::Money.new(store_credits1.sum(:amount), { currency: "BRL" }) %>
+        	<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
         <td>
 					<% store_credits2 = store_credits.where(refundable: 1).where(status: true).where("created_at < ?", Date.today - 15.days) %>
-					<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
-					<%= Spree::Money.new(store_credits2.sum(:amount), { currency: "BRL" }) %>
+					<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
         <td>
 					<% store_credits3 = store_credits.where(refundable: 1).where(status: true).where("created_at > ?", Date.today - 15.days) %>
-					<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
-					<%= Spree::Money.new(store_credits3.sum(:amount), { currency: "BRL" }) %>
+					<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
 				<td>
-					<% store_credits4 = store_credits.where(refundable: 1).where(status: false) %>
-					<%= Spree::Money.new(store_credits4.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<% store_credits4 = u.withdrawals.where(transferred_at: nil) %>
 					<%= Spree::Money.new(store_credits4.sum(:amount), { currency: "BRL" }) %>
 				</td>
+			</tr>
 		<% end %>
 	</tbody>
 </table>

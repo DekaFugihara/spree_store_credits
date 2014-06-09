@@ -5,6 +5,8 @@ Spree::Core::Engine.routes.append do
     end
     resources :users do
       resources :store_credits
+      resources :withdrawals
     end
+    resources :withdrawals
   end
 end

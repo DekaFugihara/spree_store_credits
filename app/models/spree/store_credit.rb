@@ -1,6 +1,7 @@
 # coding: utf-8
 class Spree::StoreCredit < ActiveRecord::Base
-  attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :withdrawal_info, :category
+  default_scope order('created_at DESC')
+  attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :category
                   
   before_save :set_refundable_option
 
@@ -14,10 +15,14 @@ class Spree::StoreCredit < ActiveRecord::Base
     attr_accessible :amount, :remaining_amount, :reason, :user_id
   end
   
-  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Saque", 4], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Frete devolucão peças reprovadas", 8], ["Devolução de frete", 9]]
+  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Devolução de frete", 9]]
   
   def set_refundable_option
     self.refundable = (category == 2 || category == 5) ? 0 : 1
+  end
+  
+  def category_name
+    CATEGORIES_LIST.select{ |x| x[1] == self.category }[0][0] if self.category
   end
   
 end

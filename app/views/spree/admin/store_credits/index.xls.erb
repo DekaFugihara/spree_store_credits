@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="s62">
+   <NumberFormat ss:Format="&quot;R$&quot;#,##0.00"/>
+  </Style>
+ </Styles>
+  <Worksheet ss:Name="Resgates">
+    <Table>
+      <Row>
+				<Cell><Data ss:Type="String">Data de criação</Data></Cell>
+        <Cell><Data ss:Type="String">Usuário</Data></Cell>
+				<Cell><Data ss:Type="String">Valor</Data></Cell>
+				<Cell><Data ss:Type="String">Valor remanescente</Data></Cell>
+        <Cell><Data ss:Type="String">Categoria</Data></Cell>
+				<Cell><Data ss:Type="String">Motivo</Data></Cell>
+        <Cell><Data ss:Type="String">Reembolsável?</Data></Cell>
+      </Row>
+			<% @store_credits.each do |store_credit| %>
+				<Row>
+	        <Cell><Data ss:Type="String"><%= store_credit.created_at.strftime("%d/%m/%Y") %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= store_credit.user.email if store_credit.user %></Data></Cell>
+					<Cell ss:StyleID="s62"><Data ss:Type="Number"><%= store_credit.amount %></Data></Cell>
+		      <Cell ss:StyleID="s62"><Data ss:Type="Number"><%= store_credit.remaining_amount %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= store_credit.category_name %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= store_credit.reason %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= store_credit.refundable ? "sim" : "não" %></Data></Cell>
+			</Row>
+			<% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

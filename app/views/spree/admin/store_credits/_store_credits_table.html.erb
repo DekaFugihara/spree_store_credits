@@ -1,3 +1,5 @@
+<% unless store_credits.empty? %>
+
 <table class="index">
   <thead>
     <tr>
@@ -5,8 +7,8 @@
       <th><%= t("user") %></th>
       <th><%= t("amount") %></th>
       <th><%= t("remaining_amount") %></th>
-      <th><%= t("reason") %></th>
 			<th><%= t("category") %></th>
+      <th><%= t("reason") %></th>
     </tr>
   </thead>
   <tbody>
@@ -16,21 +18,20 @@
         <td><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
         <td><%= number_to_currency store_credit.amount %></td>
         <td><%= number_to_currency store_credit.remaining_amount %></td>
+				<td><%= store_credit.category_name %></td>
         <td><%= store_credit.reason %></td>
-				<td><%= Spree::StoreCredit::CATEGORIES_LIST.select{ |x| x[1] == store_credit.category }[0][0] if store_credit.category %></td>
         <td class="actions">
           <% if store_credit.remaining_amount > 0 && store_credit.amount != store_credit.remaining_amount %>
             <%= t(:was_partially_used) %><br />
 					<% elsif store_credit.remaining_amount == 0 %>
 						<%= t(:was_fully_used) %><br />
           <% end %>
-          <%= link_to "", "/admin/store_credits/#{store_credit.id}/edit", class: "icon_link with-tip icon-edit no-text", "data-action" => "edit"%>
+          <%= link_to "", "/admin/store_credits/#{store_credit.id}/edit", class: "icon_link with-tip icon-edit no-text", "data-action" => "edit" %>
           <%= link_to "", "/admin/store_credits/#{store_credit.id}", class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
 				</td>
       </tr>
     <% end %>
-    <% if store_credits.empty? %>
-      <tr><td colspan="4"><%= t(:none) %></td></tr>
-    <% end %>
   </tbody>
 </table>
+
+<% end %>

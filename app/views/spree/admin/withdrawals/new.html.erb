@@ -1,0 +1,9 @@
+<h1><%=t("new_withdrawal")%></h1>
+
+<%= render 'spree/shared/error_messages', :target => @withdrawal %>
+
+<%= form_for(:withdrawal, :url => admin_user_withdrawals_url(params[:user_id])) do |f| %>
+	<%= f.hidden_field :user_id, :value => params[:user_id] %>
+  <%= render :partial => "form", :locals => { :f => f } %>
+  <%= render :partial => "spree/admin/shared/edit_resource_links" %>
+<% end %>

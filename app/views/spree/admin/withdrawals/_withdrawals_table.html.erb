@@ -1,0 +1,35 @@
+<% unless withdrawals.empty? %>
+
+<table class="index">
+  <thead>
+    <tr>
+			<th>Data</th>
+	    <th><%= t("user") %></th>
+	    <th><%= t("amount") %></th>
+	    <th><%= t("category") %></th>
+	    <th><%= t("description") %></th>
+	    <th><%= t("transferred_at") %></th>
+    </tr>
+  </thead>
+	<tbody>
+		<% withdrawals.each do |withdrawal| %>
+		  <tr>
+				<td><%= l withdrawal.created_at.to_date %></td>
+		    <td><%= link_to withdrawal.user.email, admin_user_url(withdrawal.user) if withdrawal.user.present? %></td>
+				<td><%= number_to_currency withdrawal.amount %></td>
+		    <td><%= withdrawal.category_name %></td>
+		    <td><%= withdrawal.category <= 2 ? withdrawal.order.number : withdrawal.description %></td>
+		    <td><%= l(withdrawal.transferred_at.to_date) if withdrawal.transferred_at %></td>
+        <td class="actions">
+					<%= link_to '', edit_admin_withdrawal_path(withdrawal), class: "icon_link with-tip icon-edit no-text", "data-action" => "edit" %>
+					<%= link_to '', admin_withdrawal_path(withdrawal), class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
+				</td>
+		  </tr>
+		<% end %>
+    <% if withdrawals.empty? %>
+      <tr><td colspan="4"><%= t(:none) %></td></tr>
+    <% end %>
+	</tbody>
+</table>
+
+<% end %>

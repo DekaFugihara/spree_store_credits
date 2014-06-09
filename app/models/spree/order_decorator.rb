@@ -1,7 +1,8 @@
 Spree::Order.class_eval do
+  has_many :withdrawals
   attr_accessible :store_credit_amount, :remove_store_credits
   attr_accessor :store_credit_amount, :remove_store_credits
-
+  
   # the check for user? below is to ensure we don't break the
   # admin app when creating a new order from the admin console
   # In that case, we create an order before assigning a user
@@ -31,20 +32,8 @@ Spree::Order.class_eval do
     adjustments.store_credits.sum(:amount).abs.to_f
   end
   
-  def store_credits
-    order_scs = []
-    if store_credit_amount > 0
-      user_scs = user.store_credits.where(status: true).where("created_at < ?", completed_at)
-      remaining_amount = store_credit_amount
-      user_scs.each do |sc|
-        remaining_amount_old = remaining_amount
-        remaining_amount -= sc.amount
-        remaining_amount = 0 if remaining_amount < 0 
-        order_scs << [sc, remaining_amount_old - remaining_amount]
-        break if remaining_amount == 0
-      end
-    end
-    order_scs
+  def store_credit_discount
+    withdrawals.where(category: 1).sum(:amount)
   end
 
   # in case of paypal payment, item_total cannot be 0
@@ -59,6 +48,31 @@ Spree::Order.class_eval do
     else
       0
     end
+  end
+
+  def refund_store_credits!
+    withdrawals.each do |withdrawal|
+      sc = withdrawal.store_credit
+      sc.remaining_amount += withdrawal.amount
+      sc.save
+      withdrawal.update_attribute(:amount, 0)
+    end
+  end
+
+  def store_credits
+    order_scs = []
+    if store_credit_amount > 0
+      user_scs = user.store_credits.where(status: true).where("created_at < ?", completed_at)
+      remaining_amount = store_credit_amount
+      user_scs.each do |sc|
+        remaining_amount_old = remaining_amount
+        remaining_amount -= sc.amount
+        remaining_amount = 0 if remaining_amount < 0 
+        order_scs << [sc, remaining_amount_old - remaining_amount]
+        break if remaining_amount == 0
+      end
+    end
+    order_scs
   end
 
   private
@@ -90,18 +104,21 @@ Spree::Order.class_eval do
   def consume_users_credit
     return unless completed? and user.present?
     credit_used = self.store_credit_amount
-
     user.store_credits.each do |store_credit|
       break if credit_used == 0
       if store_credit.remaining_amount > 0
         if store_credit.remaining_amount > credit_used
-          store_credit.remaining_amount -= credit_used
+          withdrawal_amount = credit_used
+          store_credit.remaining_amount -= withdrawal_amount
           store_credit.save
           credit_used = 0
         else
-          credit_used -= store_credit.remaining_amount
+          withdrawal_amount = store_credit.remaining_amount
+          credit_used -= withdrawal_amount
           store_credit.update_attribute(:remaining_amount, 0)
         end
+        withdrawal_category = store_credit.refundable ? 2 : 1
+        Spree::Withdrawal.create!(user_id: user.id, order_id: self.id, amount: withdrawal_amount, description: store_credit.id, category: withdrawal_category, transferred_at: Time.now)
       end
     end
   end

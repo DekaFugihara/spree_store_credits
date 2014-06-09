@@ -6,30 +6,26 @@
 				<% store_credits = Spree::StoreCredit %>
 				<p><span>A) Total</span>:<br />
 				<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %> /
-				<%= Spree::Money.new(store_credits.sum(:amount), { currency: "BRL" }) %></p><br />
+				<%= Spree::Money.new(store_credits.sum(:amount), { currency: "BRL" }) %>*</p><br />
 				
 				<% store_credits1 = store_credits.where(refundable: 0) %>
-				<p><span>B) Não-resgatável</span>:<br />
-				<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %> /
-				<%= Spree::Money.new(store_credits1.sum(:amount), { currency: "BRL" }) %></p><br />
+				<p><span>B) Não-resgatável</span>:
+				<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %></p><br />
 				
 				* restante / total
 			</div>
 		  <div class="eight columns">
 			
 				<% store_credits2 = store_credits.where(refundable: 1).where(status: true).where("created_at < ?", Date.today - 15.days) %>
-				<p><span>C) Disponível para resgate</span>:<br />
-				<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %> /
-				<%= Spree::Money.new(store_credits2.sum(:amount), { currency: "BRL" }) %></p><br />
+				<p><span>C) Disponível para resgate</span>:
+				<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %></p><br />
 
 				<% store_credits3 = store_credits.where(refundable: 1).where(status: true).where("created_at > ?", Date.today - 15.days) %>
-				<p><span>D) Indisponível para resgate</span>:<br />
-				<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %> /
-				<%= Spree::Money.new(store_credits3.sum(:amount), { currency: "BRL" }) %></p><br />
+				<p><span>D) Indisponível para resgate</span>:
+				<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %></p><br />
 
-				<% store_credits4 = store_credits.where(refundable: 1).where(status: false) %>
-				<p><span>E) Resgate solicitado</span>:<br />
-				<%= Spree::Money.new(store_credits4.sum(:remaining_amount), { currency: "BRL" }) %> /
+				<% store_credits4 = Spree::Withdrawal.where(transferred_at: nil) %>
+				<p><span>E) Resgate solicitado</span>:
 				<%= Spree::Money.new(store_credits4.sum(:amount), { currency: "BRL" }) %></p>
 				
 			</div>

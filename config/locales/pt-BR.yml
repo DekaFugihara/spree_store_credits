@@ -13,10 +13,13 @@ pt-BR:
   store_credit_maximum_amount: "O montante de crédito deve ser menor ou igual a %{amount}. Isto é obrigatório para o pedido ser confirmado."
   store_credits: "Créditos da Loja"
   you_have_store_credit: "Você tem %{amount} de crédito da loja"
-  was_fully_used: "totalmente usado"
+  was_fully_used: "esgotado"
   was_partially_used: "parcialmente usado"
   cannot_edit_used: "Não pode ser editado porque já foi usado"
-  withdrawal_info: "Info para resgate"
+  listing_withdrawals: "Resgates"
+  transferred_at: "Data de transferência"
+  order_number: "Número do pedido"
+  transfer_pending: "aguardando transferência"
   errors:
     messages:
       store_credit_minimum_order_not_reach: "Total do item do pedido é menor do que o mínimo permitido (%{amount}) para usar crédito da loja."

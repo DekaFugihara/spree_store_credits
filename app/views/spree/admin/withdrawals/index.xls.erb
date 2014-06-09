@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="s62">
+   <NumberFormat ss:Format="&quot;R$&quot;#,##0.00"/>
+  </Style>
+ </Styles>
+  <Worksheet ss:Name="Resgates">
+    <Table>
+      <Row>
+				<Cell><Data ss:Type="String">Data de solicitação</Data></Cell>
+        <Cell><Data ss:Type="String">Usuário</Data></Cell>
+				<Cell><Data ss:Type="String">Valor</Data></Cell>
+				<Cell><Data ss:Type="String">Categoria</Data></Cell>
+				<Cell><Data ss:Type="String">Descrição</Data></Cell>
+        <Cell><Data ss:Type="String">Data de transferência</Data></Cell>
+      </Row>
+			<% @withdrawals.each do |withdrawal| %>
+				<Row>
+	        <Cell><Data ss:Type="String"><%= withdrawal.created_at.strftime("%d/%m/%Y") %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= withdrawal.user.email %></Data></Cell>
+					<Cell ss:StyleID="s62"><Data ss:Type="Number"><%= withdrawal.amount %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= withdrawal.category_name %></Data></Cell>
+		      <Cell><Data ss:Type="String"><%= withdrawal.category <= 2 ? withdrawal.order.number : withdrawal.description %></Data></Cell>
+					<Cell><Data ss:Type="String"><%= withdrawal.transferred_at.strftime("%d/%m/%Y") if withdrawal.transferred_at %></Data></Cell>
+			</Row>
+			<% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

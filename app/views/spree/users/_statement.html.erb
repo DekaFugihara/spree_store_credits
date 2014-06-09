@@ -1,0 +1,82 @@
+<% admin = request.fullpath.include? "admin" %>
+<table id="statement">
+	<colgroup>
+		<col style="width: 0%;">
+		<col style="width: 15%;">
+		<col style="width: 25%;">
+		<col style="width: 15%;">
+		<col style="width: 15%;">
+		<col style="width: 15%;">
+		<col style="width: 15%;">
+	</colgroup>
+	<thead>
+		<tr>
+			<th></th>
+			<th class="left">Data</th>
+			<th class="left">Lançamento</th>
+			<th class="right">Entrada (R$)</th>
+			<th class="right">Saída (R$)</th>
+			<th class="right">Saldo (R$)</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td></td>
+			<td lass="left"><% l @user.created_at %></td>
+			<td>Saldo inicial</td>
+			<td></td>
+			<td></td>
+			<td class="right">0,00</td>
+			<td></td>
+		</tr>		
+		<% @balance = 0 %>
+		<% @store_credit_total = 0 %>
+		<% @withdrawal_total = 0 %>
+		<% lines.each do |line| %>
+			<% withdrawal = (line.class.name == "Spree::Withdrawal") ? true : false %>
+			<% amount = withdrawal ? -1*line.amount : line.amount %>
+			<% @balance += amount %>
+			<% withdrawal ? @withdrawal_total += line.amount : @store_credit_total += line.amount %>
+			<tr class="<%= cycle('odd', 'even') %>">
+				<td></td>
+				<td class="left">
+					<%= l line.created_at.to_date %>
+				</td>
+				<td class="left">
+					<%= withdrawal ? line.category_description : line.reason %>
+					<%= "*" if withdrawal && line.transferred_at.nil? %>
+				</td>
+				<td class="right credit">
+					<%= number_to_currency(amount).gsub("R$", "") if !withdrawal %><br />
+					<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin && !withdrawal && line.remaining_amount > 0 && line.amount != line.remaining_amount %>
+				</td>
+				<td class="right debit"><%= number_to_currency(amount).gsub("R$ ", "") if withdrawal %></td>
+				<td class="right balance"><%= number_to_currency(@balance).gsub("R$ ", "") %></td>
+        <td class="actions">
+					<% if withdrawal && line.transferred_at.nil? %>
+						<%= t(:transfer_pending) %><br />
+					<% end %>
+					<% if admin %>
+						<% if withdrawal %>
+							<%= link_to '', edit_admin_withdrawal_path(line), class: "icon_link with-tip icon-edit no-text", "data-action" => "edit" %>
+							<%= link_to '', admin_withdrawal_path(line), class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
+						<% else %>
+		          <%= link_to "", edit_admin_store_credit_path(line), class: "icon_link with-tip icon-edit no-text", "data-action" => "edit"%>
+		          <%= link_to "", admin_store_credit_path(line), class: "delete-resource icon_link with-tip icon-trash no-text", "data-action" => "remove", "data-confirm" => "Tem Certeza?" %>
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+		<tr class="<%= cycle('odd', 'even') %>" id="total">
+			<td></td>
+			<td></td>
+			<td class="left">Total</td>
+			<td class="right"><%= number_to_currency(@store_credit_total) %></td>
+			<td class="right"><%= number_to_currency(@withdrawal_total) %></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,20 @@
+<%= f.field_container :order_number do %>
+  <%= f.label t(:order_number) %><br />
+  <%= f.text_field :order_number %>
+<% end %>
+<%= f.field_container :amount do %>
+  <%= f.label t(:amount) %><br />
+  <%= f.text_field :amount %>
+<% end %>
+<%= f.field_container :description do %>
+  <%= f.label t(:description) %><br />
+  <%= f.text_field :description %>
+<% end %>
+<%= f.field_container :category do %>
+	<%= f.label t(:category) %><br />
+	<%= f.select :category, Spree::Withdrawal::CATEGORIES_LIST, :include_blank => true %>
+<% end %>
+<%= f.field_container :transferred_at do %>
+	<%= f.label t(:transferred_at) %><br />
+	<%= f.text_field :transferred_at, class: "date-field" %>
+<% end %>
