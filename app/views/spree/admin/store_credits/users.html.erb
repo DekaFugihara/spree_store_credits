@@ -24,8 +24,10 @@
 			<% store_credits = u.store_credits %>
       <tr>
 				<td><%= link_to u.email, admin_user_path(u) %></td>
-        <td>
-					<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %>
+				<td>
+					<%= Spree::Money.new(store_credits.sum(:remaining_amount), { currency: "BRL" }) %> /<br />
+					<%= Spree::Money.new(store_credits.sum(:amount), { currency: "BRL" }) %>
+				</td>
         <td>
 					<% store_credits1 = store_credits.where(refundable: 0) %>
         	<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %>

@@ -21,7 +21,7 @@ class Spree::Withdrawal < ActiveRecord::Base
     attr_accessible :amount, :description, :category
   end
   
-  CATEGORIES_LIST = [["Pedido (Desconto)", 1], ["Pedido (Pagamento)", 2], ["Doação", 3], ["Saque PagSeguro", 4], ["Saque Itau", 5], ["Frete", 6], ["Outra", 7]]
+  CATEGORIES_LIST = [["Pedido (Desconto)", 1], ["Pedido (Pagamento)", 2], ["Doação", 3], ["Saque PagSeguro", 4], ["Saque Conta Bancária", 5], ["Frete devolução", 6], ["Outra", 7]]
 
   def associate_order
     self.order = Spree::Order.find_by_number(order_number) unless order_number.blank?

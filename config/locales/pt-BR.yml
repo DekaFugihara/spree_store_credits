@@ -17,6 +17,8 @@ pt-BR:
   was_partially_used: "parcialmente usado"
   cannot_edit_used: "Não pode ser editado porque já foi usado"
   listing_withdrawals: "Resgates"
+  new_withdrawal: "Novo resgate"
+  editing_withdrawal: "Editar resgate"
   transferred_at: "Data de transferência"
   order_number: "Número do pedido"
   transfer_pending: "aguardando transferência"
