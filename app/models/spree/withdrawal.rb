@@ -28,7 +28,7 @@ class Spree::Withdrawal < ActiveRecord::Base
   end
   
   def store_credit
-    Spree::StoreCredit.find(description) if category < 3
+    Spree::StoreCredit.find(description) if category <= 2
   end
 
   def category_name

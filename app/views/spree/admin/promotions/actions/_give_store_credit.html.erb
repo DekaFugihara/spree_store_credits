@@ -5,3 +5,11 @@
                         promotion_action.get_preference(:amount),
                        :type => promotion_action.preferred_amount) %>
 </p>
+
+<p class="field">
+  <% field_name = "#{param_prefix}[preferred_category]" %>
+  <%= label_tag field_name, t(:preferred_category) %>
+  <%= preference_field_tag(field_name,
+                        promotion_action.get_preference(:category),
+                       :type => promotion_action.preferred_category) %>
+</p>

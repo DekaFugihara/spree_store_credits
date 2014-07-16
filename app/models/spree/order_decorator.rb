@@ -117,8 +117,7 @@ Spree::Order.class_eval do
           credit_used -= withdrawal_amount
           store_credit.update_attribute(:remaining_amount, 0)
         end
-        withdrawal_category = store_credit.refundable ? 2 : 1
-        Spree::Withdrawal.create!(user_id: user.id, order_id: self.id, amount: withdrawal_amount, description: store_credit.id, category: withdrawal_category, transferred_at: Time.now)
+        Spree::Withdrawal.create!(user_id: user.id, order_id: self.id, amount: withdrawal_amount, description: store_credit.id, category: store_credit.kind, transferred_at: Time.now)
       end
     end
   end

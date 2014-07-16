@@ -3,7 +3,7 @@ class Spree::StoreCredit < ActiveRecord::Base
   default_scope order('created_at DESC')
   attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :category
                   
-  before_save :set_refundable_option
+  before_save :set_refundable_option, :set_kind_option
 
   validates :amount, :presence => true, :numericality => true
   validates :reason, :presence => true
@@ -15,10 +15,15 @@ class Spree::StoreCredit < ActiveRecord::Base
     attr_accessible :amount, :remaining_amount, :reason, :user_id
   end
   
-  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Devolução de frete", 9]]
+  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Devolução de frete", 9], ["Natura", 10]]
   
   def set_refundable_option
-    self.refundable = (category == 2 || category == 5) ? 0 : 1
+    self.refundable = [2, 5, 10].include?(category) ? 0 : 1
+  end
+
+  # 1 = crédito tipo desconto / 2 = crédito tipo pagamento
+  def set_kind_option
+    self.kind = [2, 5].include?(category) ? 1 : 2
   end
   
   def category_name

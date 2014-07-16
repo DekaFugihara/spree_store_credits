@@ -22,6 +22,8 @@ pt-BR:
   transferred_at: "Data de transferência"
   order_number: "Número do pedido"
   transfer_pending: "aguardando transferência"
+  preferred_amount: "Quantidade"
+  preferred_category: "Categoria"
   errors:
     messages:
       store_credit_minimum_order_not_reach: "Total do item do pedido é menor do que o mínimo permitido (%{amount}) para usar crédito da loja."
