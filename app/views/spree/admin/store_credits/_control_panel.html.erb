@@ -16,11 +16,11 @@
 			</div>
 		  <div class="eight columns">
 			
-				<% store_credits2 = store_credits.where(refundable: 1).where(status: true).where("created_at < ?", Date.today - 15.days) %>
+				<% store_credits2 = store_credits.where(refundable: 1).where("created_at < ?", Date.today - 15.days) %>
 				<p><span>C) Disponível para resgate</span>:
 				<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %></p><br />
 
-				<% store_credits3 = store_credits.where(refundable: 1).where(status: true).where("created_at > ?", Date.today - 15.days) %>
+				<% store_credits3 = store_credits.where(refundable: 1).where("created_at > ?", Date.today - 15.days) %>
 				<p><span>D) Indisponível para resgate</span>:
 				<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %></p><br />
 

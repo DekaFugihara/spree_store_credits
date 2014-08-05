@@ -1,7 +1,7 @@
 # coding: utf-8
 class Spree::StoreCredit < ActiveRecord::Base
   default_scope order('created_at DESC')
-  attr_accessible :user_id, :amount, :reason, :remaining_amount, :status, :category
+  attr_accessible :user_id, :amount, :reason, :remaining_amount, :category
                   
   before_save :set_refundable_option, :set_kind_option
 

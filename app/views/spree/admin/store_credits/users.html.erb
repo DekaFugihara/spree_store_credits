@@ -33,11 +33,11 @@
         	<%= Spree::Money.new(store_credits1.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
         <td>
-					<% store_credits2 = store_credits.where(refundable: 1).where(status: true).where("created_at < ?", Date.today - 15.days) %>
+					<% store_credits2 = store_credits.where(refundable: 1).where("created_at < ?", Date.today - 15.days) %>
 					<%= Spree::Money.new(store_credits2.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
         <td>
-					<% store_credits3 = store_credits.where(refundable: 1).where(status: true).where("created_at > ?", Date.today - 15.days) %>
+					<% store_credits3 = store_credits.where(refundable: 1).where("created_at > ?", Date.today - 15.days) %>
 					<%= Spree::Money.new(store_credits3.sum(:remaining_amount), { currency: "BRL" }) %>
         </td>
 				<td>

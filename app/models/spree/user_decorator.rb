@@ -4,15 +4,15 @@ if Spree.user_class
     has_many :withdrawals, :order => 'created_at DESC, transferred_at DESC'
 
     def has_store_credit?
-      store_credits.where(status: true).present?
+      store_credits.present?
     end
 
     def store_credits_total
-      store_credits.where(status: true).sum(:remaining_amount)
+      store_credits.sum(:remaining_amount)
     end
     
     def credits_available_withdraw
-      store_credits.where(status: true).where(refundable: true).where("created_at < ?", Date.today - 15.days)
+      store_credits.where(refundable: true).where("created_at < ?", Date.today - 15.days)
     end
 
     def credits_available_withdraw_sum
@@ -28,7 +28,7 @@ if Spree.user_class
     end
     
     def withdraw_credits(amount)
-      if amount == 0 || amount > credits_available_withdraw_sum
+      if !enough_balance?(amount)
         return false
       else
         credits_available_withdraw.each do |store_credit|
@@ -46,6 +46,10 @@ if Spree.user_class
         end
         return true
       end
+    end
+
+    def enough_balance?(amount)
+      amount <= credits_available_withdraw_sum && amount > 0
     end
     
     def statement
