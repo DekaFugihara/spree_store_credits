@@ -9,7 +9,7 @@ class Spree::Withdrawal < ActiveRecord::Base
   validates :amount, :presence => true, :numericality => true
   validates :user, :presence => true
   validates :category, :presence => true
-  validate :enough_balance
+  validate :balance
 
   attr_accessor :order_number, :check_balance
   
@@ -25,8 +25,8 @@ class Spree::Withdrawal < ActiveRecord::Base
   
   CATEGORIES_LIST = [["Pedido (Desconto)", 1], ["Pedido (Pagamento)", 2], ["Doação", 3], ["Saque PagSeguro", 4], ["Saque Conta Bancária", 5], ["Frete devolução", 6], ["Outra", 7]]
 
-  def enough_balance
-    errors.add(:amount, "superior ao saldo disponível para resgate") if check_balance.nil? && !user.enough_balance?(amount)
+  def balance
+    errors.add(:amount, "superior ao saldo disponível para resgate na data de hoje") if [3, 4, 5].include?(category) && check_balance.nil? && !user.enough_balance?(amount)
   end
 
   def associate_order
