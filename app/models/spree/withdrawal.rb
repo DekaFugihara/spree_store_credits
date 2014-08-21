@@ -26,7 +26,7 @@ class Spree::Withdrawal < ActiveRecord::Base
   CATEGORIES_LIST = [["Pedido (Desconto)", 1], ["Pedido (Pagamento)", 2], ["Doação", 3], ["Saque PagSeguro", 4], ["Saque Conta Bancária", 5], ["Frete devolução", 6], ["Outra", 7]]
 
   def balance
-    errors.add(:amount, "superior ao saldo disponível para resgate na data de hoje") if [3, 4, 5].include?(category) && check_balance.nil? && !user.enough_balance?(amount)
+    errors.add(:amount, "superior ao saldo disponível para resgate na data de hoje") if check_balance.nil? && !user.enough_balance?(amount)
   end
 
   def associate_order
