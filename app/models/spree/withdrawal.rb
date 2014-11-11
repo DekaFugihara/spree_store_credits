@@ -34,7 +34,7 @@ class Spree::Withdrawal < ActiveRecord::Base
   end
   
   def withdraw_credits
-    user.withdraw_credits(amount) if check_balance.nil?
+    user.withdraw_credits(amount) #if check_balance.nil?
   end
   
   def store_credit
