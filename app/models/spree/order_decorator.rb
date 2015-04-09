@@ -71,7 +71,7 @@ Spree::Order.class_eval do
     @store_credit_amount = BigDecimal.new(@store_credit_amount.to_s).round(2)
 
     # store credit can't be greater than order total (not including existing credit), or the user's available credit
-    @store_credit_amount = [@store_credit_amount, user.store_credits_total, (total + store_credit_amount.abs)].min
+    @store_credit_amount = [@store_credit_amount, user.store_credits_total].min
 
     if @store_credit_amount <= 0
       adjustments.store_credits.destroy_all
@@ -87,6 +87,7 @@ Spree::Order.class_eval do
     # recalc totals and ensure payment is set to new amount
     update_totals
     pending_payments.first.amount = total if pending_payments.first
+    self.store_credit_amount = nil
   end
 
   def consume_users_credit

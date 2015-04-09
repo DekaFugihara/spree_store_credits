@@ -47,9 +47,9 @@ class Spree::Withdrawal < ActiveRecord::Base
   
   def category_description
     name = category_name.gsub(/\(.*\)/, "")
-    name += " #{self.order.number}" if category <= 2
-    name += " para #{self.description}" if category == 3
-    name += " #{self.description}" if category == 6
+    name += " #{order.number}" if order && category <= 2
+    name += " para #{description}" if category == 3
+    name += " #{description}" if category == 6
     name
   end
   
