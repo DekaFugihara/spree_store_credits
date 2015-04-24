@@ -2,17 +2,19 @@
 <table id="statement">
 	<colgroup>
 		<col style="width: 0%;">
-		<col style="width: 15%;">
-		<col style="width: 25%;">
-		<col style="width: 15%;">
-		<col style="width: 15%;">
-		<col style="width: 15%;">
-		<col style="width: 15%;">
+		<col style="width: 10%;">
+		<col style="width: 12%;">
+		<col style="width: 24%;">
+		<col style="width: 12%;">
+		<col style="width: 12%;">
+		<col style="width: 12%;">
+		<col style="width: 18%;">
 	</colgroup>
 	<thead>
 		<tr>
 			<th></th>
 			<th class="left">Data</th>
+			<th class="left">Liberado em*</th>
 			<th class="left">Lançamento</th>
 			<th class="right">Entrada (R$)</th>
 			<th class="right">Saída (R$)</th>
@@ -23,12 +25,13 @@
 	<tbody>
 		<tr>
 			<td></td>
-			<td lass="left"><% l @user.created_at %></td>
-			<td>Saldo inicial</td>
+			<td class="left"><%= l @user.created_at.to_date %></td>
+			<td></td>
+			<td class="left">Saldo inicial</td>
 			<td></td>
 			<td></td>
 			<td class="right">0,00</td>
-			<td></td>
+			<td class="actions"></td>
 		</tr>		
 		<% @balance = 0 %>
 		<% @store_credit_total = 0 %>
@@ -42,6 +45,10 @@
 				<td></td>
 				<td class="left">
 					<%= l line.created_at.to_date %>
+				</td>
+				<td class="left">
+					<% available_at = (line.created_at + 16.day).to_date %>
+					<%= withdrawal ? "" : l(available_at) %>
 				</td>
 				<td class="left">
 					<%= withdrawal ? line.category_description : line.reason %>
@@ -80,3 +87,4 @@
 		</tr>
 	</tbody>
 </table>
+<p>* Data a partir da qual o crédito fica disponível para resgate</p>
