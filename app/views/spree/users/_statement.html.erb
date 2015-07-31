@@ -19,7 +19,7 @@
 			<th class="right">Entrada (R$)</th>
 			<th class="right">Saída (R$)</th>
 			<th class="right">Saldo (R$)</th>
-			<th></th>
+			<th class="actions"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -79,11 +79,12 @@
 		<tr class="<%= cycle('odd', 'even') %>" id="total">
 			<td></td>
 			<td></td>
+			<td></td>
 			<td class="left">Total</td>
 			<td class="right"><%= number_to_currency(@store_credit_total) %></td>
 			<td class="right"><%= number_to_currency(@withdrawal_total) %></td>
-			<td></td>
-			<td></td>
+			<td class="right"><%= number_to_currency(@user.store_credits_total) %></td>
+			<td class="actions"></td>
 		</tr>
 	</tbody>
 </table>
