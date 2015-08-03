@@ -12,7 +12,7 @@ if Spree.user_class
     end
     
     def credits_available_withdraw
-      store_credits.where(refundable: true).where("created_at < ?", Date.today - 20.days)
+      store_credits.where(refundable: true).where("(created_at < ? and created_at > ?) or (created_at < ? and created_at <= ?)", Date.today - 20.days, Date.parse("03/08/2015"), Date.today - 15.days, Date.parse("03/08/2015"))
     end
 
     def credits_available_withdraw_sum
