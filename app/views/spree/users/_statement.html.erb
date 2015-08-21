@@ -47,7 +47,7 @@
 					<%= l line.created_at.to_date %>
 				</td>
 				<td class="left">
-					<% available_at = (line.created_at + 16.day).to_date %>
+					<% available_at = (line.created_at + 21.day).to_date %>
 					<%= withdrawal ? "" : l(available_at) %>
 				</td>
 				<td class="left">
