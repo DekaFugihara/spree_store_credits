@@ -15,10 +15,10 @@ class Spree::StoreCredit < ActiveRecord::Base
     attr_accessible :amount, :remaining_amount, :reason, :user_id
   end
   
-  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Devolução de frete", 9], ["Natura", 10]]
+  CATEGORIES_LIST = [["Sacola", 1], ["Presente", 2], ["Devolução", 3], ["Indicação de amigo", 5], ["Outra", 6], ["Troca", 7], ["Devolução de frete", 9], ["Natura", 10], ["Transferência", 11]]
   
   def set_refundable_option
-    self.refundable = [2, 5, 10].include?(category) ? 0 : 1
+    self.refundable = [1].include?(category) ? 1 : 0
   end
 
   # 1 = crédito tipo desconto / 2 = crédito tipo pagamento

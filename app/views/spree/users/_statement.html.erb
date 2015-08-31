@@ -4,11 +4,11 @@
 		<col style="width: 0%;">
 		<col style="width: 10%;">
 		<col style="width: 12%;">
-		<col style="width: 24%;">
+		<col style="width: 32%;">
 		<col style="width: 12%;">
 		<col style="width: 12%;">
 		<col style="width: 12%;">
-		<col style="width: 18%;">
+		<col style="width: 10%;">
 	</colgroup>
 	<thead>
 		<tr>
@@ -25,7 +25,7 @@
 	<tbody>
 		<tr>
 			<td></td>
-			<td class="left"><%= l @user.created_at.to_date %></td>
+			<td class="left" style="line-height:36px;"><%= l @user.created_at.to_date %></td>
 			<td></td>
 			<td class="left">Saldo inicial</td>
 			<td></td>
@@ -43,15 +43,16 @@
 			<% withdrawal ? @withdrawal_total += line.amount : @store_credit_total += line.amount %>
 			<tr class="<%= cycle('odd', 'even') %>">
 				<td></td>
-				<td class="left">
+				<td class="left" style="line-height:36px;">
 					<%= l line.created_at.to_date %>
 				</td>
 				<td class="left">
 					<% available_at = (line.created_at + 21.day).to_date %>
-					<%= withdrawal ? "" : l(available_at) %>
+					<%= withdrawal || !(line.refundable) ? "" : l(available_at) %>
 				</td>
 				<td class="left">
 					<%= withdrawal ? line.category_description : line.reason %>
+					<%= "<span style='font-size:12px'>(#{line.description})</span>".html_safe if withdrawal && line.category == 8 %>
 					<%= "*" if withdrawal && line.transferred_at.nil? %>
 				</td>
 				<td class="right credit">
