@@ -17,6 +17,20 @@ module Spree
       @withdrawal = Spree::Withdrawal.find(params[:id])
       @withdrawal.order_number = @withdrawal.order.number if @withdrawal.order
     end
+
+    def create
+      @withdrawal = Spree::Withdrawal.new(params[:withdrawal])
+
+      respond_to do |format|
+        if @withdrawal.save
+          format.html { redirect_to admin_user_path(params[:user_id]), notice: 'Resgate criado com sucesso.' }
+          format.json { render json: @withdrawal, status: :created, location: @withdrawal }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @withdrawal.errors, status: :unprocessable_entity }
+        end
+      end
+    end
     
     private
 

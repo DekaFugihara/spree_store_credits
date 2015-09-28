@@ -4,8 +4,35 @@ module Spree
     #prepend_before_filter :set_remaining_amount, :only => [:create, :update]
     respond_to :xls, :html
 
-    def index
+    def create
+      @store_credit = Spree::StoreCredit.new(params[:store_credit])
 
+      respond_to do |format|
+        if @store_credit.save
+          format.html { redirect_to admin_user_path(params[:user_id]), notice: 'Store credit was successfully created.' }
+          format.json { render json: @store_credit, status: :created, location: @store_credit }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @store_credit.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def update
+      @store_credit = Spree::StoreCredit.find(params[:store_credit][:id])
+
+      respond_to do |format|
+        if @store_credit.update_attributes(params[:store_credit])
+          format.html { redirect_to admin_user_path(@store_credit.user), notice: 'Store Credit atualizado com sucesso.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @product_brand.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def index
       respond_with(@store_credits) do |format|
         format.html
         format.xls do
