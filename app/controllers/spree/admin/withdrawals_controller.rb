@@ -3,7 +3,6 @@ module Spree
     respond_to :xls, :html
 
     def index
-
       respond_with(@withdrawals) do |format|
         format.html
         format.xls do
@@ -16,6 +15,20 @@ module Spree
     def edit
       @withdrawal = Spree::Withdrawal.find(params[:id])
       @withdrawal.order_number = @withdrawal.order.number if @withdrawal.order
+    end
+
+    def update
+      @withdrawal = Spree::Withdrawal.find(params[:withdrawal][:id])
+
+      respond_to do |format|
+        if @withdrawal.update_attributes(params[:withdrawal])
+          format.html { redirect_to admin_user_path(@withdrawal.user), notice: 'Withdrawal atualizado com sucesso.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @product_brand.errors, status: :unprocessable_entity }
+        end
+      end
     end
 
     def create

@@ -51,13 +51,13 @@
 					<%= withdrawal || !(line.refundable) ? "" : l(available_at) %>
 				</td>
 				<td class="left">
-					<%= withdrawal ? line.category_description : line.reason %>
-					<%= "<span style='font-size:12px'>(#{line.description})</span>".html_safe if withdrawal && line.category == 8 %>
-					<%= "*" if withdrawal && line.transferred_at.nil? %>
+					<%= withdrawal ? line.category_description : line.reason %><%= "*" if withdrawal && line.transferred_at.nil? %>
+					<%= "<br /><span style='font-size:12px'>(#{line.description})</span>".html_safe if withdrawal && line.category == 5 %>
+					
 				</td>
 				<td class="right credit">
 					<%= number_to_currency(amount).gsub("R$", "") if !withdrawal %><br />
-					<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin && !withdrawal && line.remaining_amount > 0 && line.amount != line.remaining_amount %>
+					<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin %>
 				</td>
 				<td class="right debit"><%= number_to_currency(amount).gsub("R$ ", "") if withdrawal %></td>
 				<td class="right balance"><%= number_to_currency(@balance).gsub("R$ ", "") %></td>
