@@ -56,8 +56,10 @@
 					
 				</td>
 				<td class="right credit">
-					<%= number_to_currency(amount).gsub("R$", "") if !withdrawal %><br />
-					<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin %>
+					<% unless withdrawal %>
+						<%= number_to_currency(amount).gsub("R$", "")  %><br />
+						<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin %>
+					<% end %>
 				</td>
 				<td class="right debit"><%= number_to_currency(amount).gsub("R$ ", "") if withdrawal %></td>
 				<td class="right balance"><%= number_to_currency(@balance).gsub("R$ ", "") %></td>
