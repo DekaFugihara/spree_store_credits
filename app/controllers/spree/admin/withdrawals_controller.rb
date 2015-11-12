@@ -18,7 +18,7 @@ module Spree
     end
 
     def update
-      @withdrawal = Spree::Withdrawal.find(params[:withdrawal][:id])
+      @withdrawal = Spree::Withdrawal.find(params[:id])
 
       respond_to do |format|
         if @withdrawal.update_attributes(params[:withdrawal])
