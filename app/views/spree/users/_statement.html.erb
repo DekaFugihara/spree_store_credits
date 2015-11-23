@@ -41,27 +41,27 @@
 			<% amount = withdrawal ? -1*line.amount : line.amount %>
 			<% @balance += amount %>
 			<% withdrawal ? @withdrawal_total += line.amount : @store_credit_total += line.amount %>
-			<tr class="<%= cycle('odd', 'even') %>">
+			<tr class="<%= cycle('odd', 'even') %> <%= withdrawal ? 'type_withdrawal' : 'type_credit' %>">
 				<td></td>
 				<td class="left" style="line-height:36px;">
 					<%= l line.created_at.to_date %>
 				</td>
-				<td class="left">
+				<% resgatavel = !withdrawal && (line.refundable) %>
+				<td class="left <%= 'empty' unless resgatavel %>">
 					<% available_at = (line.created_at + 21.day).to_date %>
-					<%= withdrawal || !(line.refundable) ? "" : l(available_at) %>
+					<%= resgatavel ? l(available_at) : "" %>
 				</td>
 				<td class="left">
 					<%= withdrawal ? line.category_description : line.reason %><%= "*" if withdrawal && line.transferred_at.nil? %>
 					<%= "<br /><span style='font-size:12px'>(#{line.description})</span>".html_safe if withdrawal && line.category == 5 %>
-					
 				</td>
-				<td class="right credit">
+				<td class="right credit <%= 'empty' if withdrawal %>">
 					<% unless withdrawal %>
 						<%= number_to_currency(amount).gsub("R$", "")  %><br />
 						<%= "(#{number_to_currency(line.remaining_amount).gsub('R$ ', '')})" if admin %>
 					<% end %>
 				</td>
-				<td class="right debit"><%= number_to_currency(amount).gsub("R$ ", "") if withdrawal %></td>
+				<td class="right debit <%= 'empty' unless withdrawal %>"><%= number_to_currency(amount).gsub("R$ ", "") if withdrawal %></td>
 				<td class="right balance"><%= number_to_currency(@balance).gsub("R$ ", "") %></td>
         <td class="actions">
 					<% if withdrawal && line.transferred_at.nil? %>
